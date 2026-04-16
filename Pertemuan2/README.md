@@ -1,5 +1,5 @@
 
-2.5.4 Pertanyaan Praktikum: 
+## 2.5.4 Pertanyaan Praktikum: 
 1. Gambarkan rangkaian schematic yang digunakan pada percobaan!
 2. Apa yang terjadi jika nilai num lebih dari 15?
 3. Apakah program ini menggunakan common cathode atau common anode? Jelaskan
@@ -12,7 +12,9 @@ Jawab:
 1. Rangkaian menggunakan Arduino Uno sebagai pengendali utama yang dihubungkan ke Seven Segment melalui resistor 220 ohm pada setiap jalur segmen (opsional). Pada konfigurasi ini tidak menggunakan resistor dan pin Common pada Seven Segment dihubungkan langsung ke 5V (VCC).
 2. Jika variabel num memiliki nilai lebih dari 15, maka program akan mengalami error out of bounds atau akses memori di luar batas array. Hal ini terjadi karena array digitPattern[16][8] hanya didefinisikan untuk 16 indeks (0 sampai 15). Mengakses indeks ke-16 atau lebih akan menyebabkan mikrokontroler membaca data sampah (garbage data) dari memori, sehingga tampilan pada Seven Segment menjadi acak, tidak terdefinisi, atau program dapat mengalami crash.
 3. Program ini menggunakan common Anode karena Pin common pada komponen dihubungkan ke jalur VCC/5V dan code yang digunakan menggunakan operator NOT (!) pada fungsi digitalWrite(segmentPins[i], !digitPattern[num][i]). Ini menunjukkan logika active-low, di mana segmen akan menyala hanya jika pin Arduino berlogika LOW (0) untuk menciptakan perbedaan potensial dengan VCC..
-4. #include <Arduino.h>
+4.
+```cpp
+#include <Arduino.h>
 
 // Pin mapping berdasarkan Tabel 1.4: a, b, c, d, e, f, g, dp
 const int segmentPins[8] = {7, 6, 5, 11, 10, 8, 9, 4};
@@ -61,8 +63,9 @@ void loop() {
     delay(1000);      // Jeda 1 detik untuk stabilitas visual 
   }
 }
+```
 
-2.6.4 Pertanyaan Praktikum:
+## 2.6.4 Pertanyaan Praktikum:
 1. Gambarkan rangkaian schematic yang digunakan pada percobaan!
 2. Mengapa pada push button digunakan mode INPUT_PULLUP pada Arduino Uno?
 Apa keuntungannya dibandingkan rangkaian biasa?
@@ -93,6 +96,7 @@ Keuntungannya adalah Tidak memerlukan resistor eksternal pada breadboard, sehing
   -Pin terkait belum dikonfigurasi sebagai OUTPUT pada fungsi setup()
 
 4. Dual Button
+```cpp
 #include <Arduino.h>
 
 // Mendefinisikan pin digital Arduino yang terhubung ke segmen a, b, c, d, e, f, g, dp 
@@ -181,3 +185,4 @@ void loop()
     delay(200); // Debounce sederhana
   }
 }
+```
