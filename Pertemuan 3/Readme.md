@@ -12,10 +12,10 @@ Jawaban :
 1. Proses dari Input Keyboard hingga LED Menyala/MatiProses ini dimulai ketika pengguna mengetikkan karakter pada Serial Monitor di komputer. Karakter tersebut dikirimkan dalam bentuk bit serial melalui kabel USB menuju Arduino menggunakan protokol UART (Universal Asynchronous Receiver-Transmitter). Setelah data sampai di Arduino, data tersebut disimpan sementara di dalam buffer serial. Program Arduino kemudian memeriksa keberadaan data tersebut menggunakan fungsi Serial.available(), lalu membacanya dengan fungsi Serial.read(). Karakter yang terbaca (misalnya '1' atau '0') dibandingkan di dalam struktur logika if-else. Jika karakter adalah '1', Arduino mengirimkan sinyal tegangan tinggi (HIGH) ke Pin 8 yang mengakibatkan LED menyala, dan jika '0', Arduino mengirimkan sinyal rendah (LOW) sehingga LED mati.
 2. Fungsi Serial.available() dan Dampak Jika DihilangkanFungsi Serial.available() digunakan untuk mengecek apakah ada data yang masuk dari komputer dan tersimpan di dalam buffer serial. Hal ini penting karena komunikasi serial bersifat asinkron, sehingga Arduino tidak tahu kapan tepatnya data akan datang. Jika baris ini dihilangkan, fungsi Serial.read() akan terus dijalankan pada setiap perulangan loop(), meskipun tidak ada data yang dikirimkan. Akibatnya, Serial.read() akan menghasilkan nilai -1 secara terus-menerus, yang dapat mengganggu logika program dan menyebabkan respon sistem menjadi tidak stabil atau memberikan output kesalahan yang berulang secara tidak perlu
 3. Modifikasi Program
-'''cpp
+```cpp
 #include <Arduino.h>
 
-const int PIN_LED = 8; // Sesuai tabel wiring modul [cite: 169]
+const int PIN_LED = 8; // Sesuai tabel wiring modul 
 char mode = '0';       // Variabel untuk menyimpan status mode saat ini
 
 void setup() {
@@ -53,8 +53,8 @@ void loop() {
     digitalWrite(PIN_LED, LOW);
     delay(500);
   }
-} 
-'''
+}
+```
 4. Untuk sistem sederhana yang hanya menjalankan satu tugas seperti pada percobaan 3A, penggunaan delay() masih dapat diterima. Namun, dalam pengembangan sistem yang lebih kompleks, sangat disarankan menggunakan millis().
 
 -Pengaruh delay(): Fungsi ini bersifat blocking, artinya mikrokontroler akan berhenti total dan tidak bisa melakukan tugas lain (termasuk membaca input serial baru) selama durasi jeda berlangsung. Ini membuat sistem menjadi tidak responsif saat LED sedang dalam fase tunggu blink.
@@ -77,21 +77,22 @@ Tampilan jika potensiometer dalam kondisi diputar paling kiri
 Persen: 0% 
 ADC: 0  0% | setCursor(0, 0) dan Bar (level) | setCursor(0, 1) 
 Berikan penjelasan disetiap baris kode nya dalam bentuk README.md!
-4. Lengkapi table berikut berdasarkan pengamatan pada Serial Monitor 
+4. Lengkapi table berikut berdasarkan pengamatan pada Serial Monitor
 | ADC | Volt (V) | Persen (%) |
 | :---: | :---: | :---: |
-| 1 |  |  |
-| 21 |  |  |
-| 49 |  |  |
-| 74 |  |  |
-| 96 |  |  |
+| 1 | | |
+| 21 | | |
+| 49 | | |
+| 74 | | |
+| 96 | | |
+
 Jawab:
 1. Komunikasi I2C pada rangkaian ini bekerja menggunakan prinsip Master-Slave, di mana Arduino Uno bertindak sebagai Master dan modul LCD I2C bertindak sebagai Slave. Master mengontrol seluruh pertukaran data melalui dua jalur kabel utama: SDA (Serial Data) untuk mengirim data dan SCL (Serial Clock) untuk menyinkronkan waktu pengiriman bit. Agar data sampai ke perangkat yang tepat, Arduino mengirimkan I2C Address unik (seperti 0x27) ke jalur bus; hanya LCD dengan alamat tersebut yang akan merespons instruksi untuk menampilkan teks atau grafik.
 
 2. Secara fungsional, pin potensiometer memang harus terhubung ke Ground, VCC, dan Pin Analog (A0) agar dapat membentuk pembagi tegangan (voltage divider). Jika pin kiri dan pin kanan tertukar, rangkaian tetap akan berfungsi dengan aman, namun arah pembacaan nilai akan menjadi terbalik. Jika sebelumnya putaran ke kanan meningkatkan nilai ADC, setelah ditukar, putaran ke kanan justru akan menurunkan nilai ADC menuju 0 karena urutan tegangan referensi yang diterima pin tengah menjadi terbalik terhadap posisi fisik tuas.
 
 3. Modifikasi
-'''cpp
+```cpp
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <Arduino.h>
@@ -141,7 +142,7 @@ void loop() {
 
   delay(500); // Jeda pembaruan data
 }
-'''
+```
 4. 
 | ADC | Volt (V) | Persen (%) |
 | :---: | :---: | :---: |
